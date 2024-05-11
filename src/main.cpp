@@ -4,6 +4,11 @@
 #include <ncurses.h>
 #endif
 
-int main() {   
+int main() { 
+    initscr();
+    printw("Hello World!!!");
+    refresh();
+    getch();
+    endwin();
     return 0;
 }
