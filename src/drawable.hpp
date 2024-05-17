@@ -3,42 +3,15 @@
 class Drawable
 {
     public:
-        Drawable(){
-            y = x = 0;
-            icon = ' ';
-        }
+        Drawable();
+        Drawable(int y, int x, char ch);
 
-        Drawable(int y, int x, char ch)
-        {
-            this-> y = y;
-            this-> x = x;
-            this-> icon = ch;
-        }
+        int getX();
+        int getY();
+        void setX(int x);
+        void setY(int y);
+        char getIcon();
 
-        int getX()
-        {
-            return x;
-        }
-
-        int getY()
-        {
-            return y;
-        }
-
-        void setX(int x)
-        {
-            this-> x = x;
-        }
-
-        void setY(int y)
-        {
-            this-> y = y;
-        }
-
-        char getIcon()
-        {
-            return icon;
-        }
     protected:
         int y, x;
         char icon;
