@@ -4,7 +4,7 @@ CCFLAGS := -Wall
 SRC_PATH := src
 OBJ_PATH := obj
 
-TARGET = snake
+TARGET = main
 
 SOURCES	:= $(wildcard $(SRC_PATH)/*.cpp)
 OBJECTS	:= $(SOURCES: $(SRC_PATH)/%.cpp=$(OBJ_PATH)/%.o)
