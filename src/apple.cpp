@@ -1,5 +1,3 @@
-
-#include <ncurses.h>
 #include "apple.hpp"
 
 namespace snake {
