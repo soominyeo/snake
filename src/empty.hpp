@@ -1,13 +1,10 @@
 #pragma once
 #include "drawable.hpp"
 
-class Empty : public Drawable
-{
-public:
-    Empty(int y, int x)
+namespace snake {
+    class Empty : public Drawable
     {
-        this->y = y;
-        this->x = x;
-        this->icon = ' ';
-    }
-};
+    public:
+        Empty(int y, int x);
+    };
+}

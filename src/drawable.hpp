@@ -1,18 +1,20 @@
 #pragma once
 
-class Drawable
-{
-    public:
-        Drawable();
-        Drawable(int y, int x, char ch);
+namespace snake {
+    class Drawable
+    {
+        public:
+            Drawable();
+            Drawable(int y, int x, char ch);
 
-        int getX();
-        int getY();
-        void setX(int x);
-        void setY(int y);
-        char getIcon();
+            int getX();
+            int getY();
+            void setX(int x);
+            void setY(int y);
+            char getIcon();
 
-    protected:
-        int y, x;
-        char icon;
-};
+        protected:
+            int y, x;
+            char icon;
+    };
+}

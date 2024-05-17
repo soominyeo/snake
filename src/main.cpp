@@ -8,7 +8,7 @@ const int BOARD_SIZE{21};
 const double BOARD_ROW{BOARD_SIZE};
 const double BOARD_COL{BOARD_SIZE * 3};
 
-
+using namespace snake;
 
 int main(){
     initscr();      // start curses mode / window named stdscr memorization
