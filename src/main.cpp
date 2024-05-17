@@ -1,7 +1,7 @@
 #include <iostream>
 #include <ncurses.h>
-#include "Board.hpp"
-#include "SnakeGame.hpp"
+#include "board.hpp"
+#include "snake-game.hpp"
 
 
 const int BOARD_SIZE{21};

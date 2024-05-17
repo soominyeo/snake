@@ -4,17 +4,17 @@
 #include <time.h>
 #include <stdlib.h>
 
-#include "Drawable.hpp"
-#include "Apple.hpp"
-#include "Bomb.hpp"
-#include "Warp1.hpp"
-#include "Warp2.hpp"
-#include "Empty.hpp"
+#include "drawable.hpp"
+#include "apple.hpp"
+#include "bomb.hpp"
+#include "warp1.hpp"
+#include "warp2.hpp"
+#include "empty.hpp"
 
-#include "Board.hpp"
-#include "Scoreboard.hpp"
+#include "board.hpp"
+#include "scoreboard.hpp"
 
-#include "Snake.hpp"
+#include "snake.hpp"
 
 
 

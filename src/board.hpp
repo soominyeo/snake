@@ -1,7 +1,7 @@
 #pragma once
 #include <ncurses.h>
 #include <stdlib.h>
-#include "Drawable.hpp"
+#include "drawable.hpp"
 
 
 class Board{

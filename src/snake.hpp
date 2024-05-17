@@ -1,6 +1,6 @@
 #pragma once
 #include <ncurses.h>
-#include "Drawable.hpp"
+#include "drawable.hpp"
 #include <queue>
 
 
