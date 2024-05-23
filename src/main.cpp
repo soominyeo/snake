@@ -22,7 +22,7 @@ int main(){
 
     SnakeGame game = SnakeGame(BOARD_ROW, BOARD_COL);
 
-    //get start time
+    //시작 시간 구함	
     auto start_time = std::chrono::steady_clock::now();
 
     while (!game.isOver())
@@ -34,11 +34,12 @@ int main(){
         // 3: redraw display
         game.redraw();
         
-        //calculate 7seconds
+        //특정 시간 구함
         auto end_time = std::chrono::steady_clock::now();
+        //시간 계산(특정 시간 - 시작 시간)
         auto temp= std::chrono::duration_cast<std::chrono::seconds>(end_time-start_time).count();
         
-        //more than 7seconds
+        //7초가 됐을 때
         if(temp>=7){
             game.ItemUpdate();
             start_time=end_time;
