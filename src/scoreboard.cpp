@@ -19,7 +19,9 @@ namespace snake {
 
     void Scoreboard::updateScore(int score)
     {
-        mvwprintw(score_win, 0, score_win->_maxx - 10, "%11i", score);
+        //modify becuase of error
+        int maxx=getmaxx(score_win);
+        mvwprintw(score_win, 0, maxx - 10, "%11i", score);
     }
 
     void Scoreboard::clear()

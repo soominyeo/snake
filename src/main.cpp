@@ -1,5 +1,7 @@
 #include <iostream>
 #include <ncurses.h>
+#include <chrono>
+#include <thread>
 #include "board.hpp"
 #include "snake-game.hpp"
 
@@ -20,17 +22,27 @@ int main(){
 
     SnakeGame game = SnakeGame(BOARD_ROW, BOARD_COL);
 
+    //get start time
+    auto start_time = std::chrono::steady_clock::now();
+
     while (!game.isOver())
     {
         // 1: get input from user
         game.processInput();
-
         // 2: update game state
         game.updateState();
-
         // 3: redraw display
         game.redraw();
-
+        
+        //calculate 7seconds
+        auto end_time = std::chrono::steady_clock::now();
+        auto temp= std::chrono::duration_cast<std::chrono::seconds>(end_time-start_time).count();
+        
+        //more than 7seconds
+        if(temp>=7){
+            game.ItemUpdate();
+            start_time=end_time;
+        }
         // 4: go to 1, unless game over
     }
     
