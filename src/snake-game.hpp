@@ -40,6 +40,8 @@ namespace snake {
         void initialize();
         void processInput();
         void updateState();
+        //new
+        void ItemUpdate();
         void redraw();
         bool isOver();
         int getScore();

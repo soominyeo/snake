@@ -340,6 +340,24 @@ namespace snake {
         }
     }
 
+    //item update per 7seconds
+    void SnakeGame::ItemUpdate()
+    {
+        if (apple != NULL) {
+            board.addAt(apple->getY(), apple->getX(), ' ');
+            delete apple;
+            apple = NULL;
+            createApple();
+        }
+
+        if (bomb != NULL) {
+            board.addAt(bomb->getY(), bomb->getX(), ' ');
+            delete bomb;
+            bomb = NULL;
+            createBomb();
+        }
+    }
+
     void SnakeGame::redraw()
     {
         board.refresh();
