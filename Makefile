@@ -4,6 +4,7 @@ LDFLAGS := -L/usr/lib -lncurses
 
 SRC_PATH := src
 OBJ_PATH := obj
+BUILD_PATH := build
 
 # target(entry point)와 target-specific dependency 정의
 TARGET              := main main2
@@ -23,6 +24,7 @@ all : $(TARGET)
 
 $(TARGET): $$(DEPENDENCY)
 	$(CC) -o $@ $(filter %.c %.cpp %.o, $^) $(CCFLAGS) $(LDFLAGS)
+	mkdir -p $(BUILD_PATH) && mv $@ $(addprefix $(BUILD_PATH)/,$@)
 
 $(OBJ_PATH)/%.o : $(SRC_PATH)/%.cpp $(wildcard $(SRC_PATH)/%.hpp)
 	$(CC) -c $< -o $@ $(CCFLAGS)

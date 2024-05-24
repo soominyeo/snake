@@ -31,7 +31,7 @@ obj/**
 *.exe
 *.out
 *.app
-main
+build/**
 
 # .vscode
 .vscode/**
