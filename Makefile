@@ -6,21 +6,25 @@ SRC_PATH := src
 OBJ_PATH := obj
 
 # target(entry point)와 target-specific dependency 정의
-TARGET              := main
-TARGET_DEPENDENCY   := main.cpp
+TARGET              := main main2
+TARGET_DEPENDENCY   := main.cpp main2.cpp
 
-# target-specific
-SOURCES     := $(filter-out $(SRC_PATH)/$(TARGET_DEPENDENCY), $(wildcard $(SRC_PATH)/*.cpp))
-OBJECTS     := $(patsubst $(SRC_PATH)/%.cpp,$(OBJ_PATH)/%.o,$(SOURCES))
-ALL_OBJECTS := $(OBJ_PATH)/main.o $(OBJECTS)
+SOURCES		:= $(filter-out $(addprefix $(SRC_PATH)/,$(TARGET_DEPENDENCY)), $(wildcard $(SRC_PATH)/*.cpp) $(wildcard $(SRC_PATH)/*.h*))
+OBJECTS 	:= $(patsubst $(SRC_PATH)/%.cpp,$(OBJ_PATH)/%.o,$(filter-out %.h %.hpp,$(SOURCES)))
+DEPENDENCY 	= $(OBJECTS)
 
-# main 타겟과 의존성 정의
-$(TARGET): $(ALL_OBJECTS)
-	$(CC) -o $@ $^ $(LDFLAGS)
+# target-specific dependency 정의
+main: DEPENDENCY += $(SRC_PATH)/main.cpp
+main2: DEPENDENCY += $(SRC_PATH)/main2.cpp
 
-# .cpp 파일에서 .o 파일을 생성하는 규칙
-$(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp
-	@mkdir -p $(OBJ_PATH)
+.SECONDEXPANSION:
+
+all : $(TARGET)
+
+$(TARGET): $$(DEPENDENCY)
+	$(CC) -o $@ $(filter %.c %.cpp %.o, $^) $(CCFLAGS) $(LDFLAGS)
+
+$(OBJ_PATH)/%.o : $(SRC_PATH)/%.cpp $(wildcard $(SRC_PATH)/%.hpp)
 	$(CC) -c $< -o $@ $(CCFLAGS)
 
 # 의존성 목록 출력
@@ -31,4 +35,4 @@ list:
 
 # 깨끗하게 청소
 clean:
-	rm -rf $(OBJ_PATH)/*.o $(TARGET)
+	rm -rf $(OBJECTS) $(TARGET)
