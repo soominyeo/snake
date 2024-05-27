@@ -77,6 +77,11 @@ namespace snake{
         return snake.size() - 1;
     }
 
+     void Snake::setd(Direction s)
+    {
+        cur_direction= s;
+    }
+
     Direction Snake::getDirection()
     {
         return cur_direction;

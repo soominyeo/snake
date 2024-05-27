@@ -34,12 +34,10 @@ namespace snake{
         // 아이템 놓을 수 있는 위치 찾기
         void getItemPos(int &y, int &x);
 
-        // void getWallPos(int &y, int &x)
-        // {
-        //     while((mvwinch(gameBoard, y = rand() % 21, x = rand() % 21)) != '1');
-        // }
+        void getWarpPos(int &y, int &x);
 
     private:
+        void construct(int height, int width);
         int xMax, yMax;
         WINDOW *gameBoard;
         int stageNum;

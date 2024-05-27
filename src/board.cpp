@@ -129,13 +129,13 @@ namespace snake{
     }
 
     // gameBoard의 메모리상에서 (y, x) 위치에 ch 문자 추가하기
-    void Board::add(int y, int x, char ch)
+    void Board::add(const int y, const int x, char ch)
     {
         mvwaddch(gameBoard, y, x, ch);
     }
 
     // gameBoard의 (y, x) 위치에서의 문자 값 get하기
-    char Board::getCharAt(int y, int x)
+    char Board::getCharAt(const int y, const int x)
     {
         return mvwinch(gameBoard, y, x);
     }
@@ -170,5 +170,10 @@ namespace snake{
         // y, x를 각각 0부터 21까지 랜덤 돌려서 gameBoard의 (y, x)가 공백일 때까지 반복
         // 이때 y, x는 레퍼런스로 받아서 랜덤 돌려질때마다 실질값으로 적용됨
         while((mvwinch(gameBoard, y = rand() % 21, x = rand() % 21)) != ' ');
+    }
+
+    void Board::getWarpPos(int &y, int &x)
+    {
+        while((mvwinch(gameBoard, y = rand() % 22, x = rand() % 22)) != '1');
     }
 }

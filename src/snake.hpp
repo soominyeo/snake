@@ -63,5 +63,6 @@ namespace snake{
         // 다음으로 나아가야하는 위치 값을 가진 SnakePiece 반환
         SnakePiece nexthead();
 
+        void setd(Direction direct);
     };
 }
