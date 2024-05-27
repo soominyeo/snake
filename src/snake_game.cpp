@@ -1,4 +1,6 @@
 #include "snake_game.hpp"
+#include <chrono>
+#include <thread>
 
 namespace snake{
     // 생성자 호출 시 게임 창을 stage 0번으로 초기화
@@ -12,6 +14,9 @@ namespace snake{
     {
         delete apple;
         delete bomb;
+        delete warp1;
+        delete warp2;
+        delete tmp_next;
     }
 
     // 게임 시작할 시(= 생성자 호출 될 시) 진행하는 로직
@@ -32,8 +37,8 @@ namespace snake{
         // 사과랑 폭탄 만든다
         createApple();
         createBomb();
-        // createWarp1();
-        // createWarp2();
+        createWarp();
+        tmp_next=NULL;
     }
 
     // 사과 만드는 함수
@@ -62,6 +67,18 @@ namespace snake{
 
         // 게임 창의 메모리 상으로 사과 B 추가
         board.add(y, x, 'B');
+    }
+
+    void SnakeGame::createWarp()
+    {
+        int y, x;
+        board. getWarpPos(y,x);
+        warp1=new Warp(y,x);
+        board.add(y, x, '$');
+
+        board. getWarpPos(y,x);
+        warp2=new Warp(y,x);
+        board.add(y, x, '$');
     }
 
     // 입력 받은 값에 따라 작동을 달리하는 로직
@@ -126,8 +143,24 @@ namespace snake{
         // next는 snake가 다음 어디로 가야할지 그 위치의 값을 가진 SnakePiece이다
         SnakePiece next = snake.nexthead();
 
-        // next 라는 SnakePiece를 가지고 뱀을 조종
-        handleNext(next);
+        if(board.getCharAt(next.getY(), next.getX())== '$')
+        {
+            if((next.getY()==warp1->getY()) && (next.getX()==warp1->getX())){
+                //check 4 direction of warp2
+                //UP, DOWN, RIGHT, LEFT
+                checkWarp(next, warp2);
+            }
+            else if((next.getY()==warp2->getY()) && (next.getX()==warp2->getX())){
+                checkWarp(next, warp1);
+            }
+            handleNext(next);
+        }
+        else
+            // next 라는 SnakePiece를 가지고 뱀을 조종
+            handleNext(next);
+
+        if((tmp_next!=NULL)&&(board.getCharAt(tmp_next->getY(), tmp_next->getX()) !='#')&& (board.getCharAt(tmp_next->getY(), tmp_next->getX()) !='%'))
+            endWarp();
 
         // 만약 사과나 폭탄이 NULL 상태라면 생성해야 한다
         if (apple == NULL)
@@ -140,6 +173,11 @@ namespace snake{
             createBomb();
         }
 
+        if(warp1==NULL && warp2==NULL)
+        {
+            createWarp();
+        }
+
         // 만약 snake의 몸 길이가 3 미만이라면 게임 오버로 간주
         if (snake.getSize() < 3)
         {
@@ -148,7 +186,7 @@ namespace snake{
     }
 
     // 뱀이 다음 위치로 어떻게 나아가야하는지 icon에 따라 조종하는 함수
-    void SnakeGame::handleNext(SnakePiece next)
+    void SnakeGame::handleNext(SnakePiece& next)
     {   
         int nextRow = next.getY();
         int nextCol = next.getX();
@@ -290,4 +328,71 @@ namespace snake{
         }
     }
     // ==============================================
+
+    void SnakeGame::endWarp()
+    {
+        board.add(warp1->getY(), warp1->getX(), '1');
+        delete warp1;
+        warp1=NULL;
+
+        board.add(warp2->getY(), warp2->getX(), '1');
+        delete warp2;
+        warp2=NULL;
+
+        delete tmp_next;
+        tmp_next=NULL;
+    }
+
+    void SnakeGame::checkWarp(SnakePiece& next, Warp *warp)
+    {
+        int dy[4]={}, dx[4]={};
+        Direction key[5];
+
+        if (snake.getDirection() == up) {
+            // UP, RIGHT, LEFT, DOWN
+            dx[0] = 0; dy[0] = -1; key[0] = up;
+            dx[1] = 1; dy[1] = 0; key[1] = right;
+            dx[2] = -1; dy[2] = 0; key[2] = left;
+            dx[3] = 0; dy[3] = 1; key[3] = down;
+        } 
+        else if (snake.getDirection() == down) {
+            // DOWN, LEFT, RIGHT, UP
+            dx[0] = 0; dy[0] = 1; key[0] = down;
+            dx[1] = -1; dy[1] = 0; key[1] = left;
+            dx[2] = 1; dy[2] = 0; key[2] = right;
+            dx[3] = 0; dy[3] = -1; key[3] = up;
+        } 
+        else if (snake.getDirection() == right) {
+            // RIGHT, DOWN, UP, LEFT
+            dx[0] = 1; dy[0] = 0; key[0] = right;
+            dx[1] = 0; dy[1] = 1; key[1] = down;
+            dx[2] = 0; dy[2] = -1; key[2] = up;
+            dx[3] = -1; dy[3] = 0; key[3] = left;
+        } 
+        else if (snake.getDirection() == left) {
+            // LEFT, UP, DOWN, RIGHT
+            dx[0] = -1; dy[0] = 0; key[0] = left;
+            dx[1] = 0; dy[1] = -1; key[1] = up;
+            dx[2] = 0; dy[2] = 1; key[2] = down;
+            dx[3] = 1; dy[3] = 0; key[3] = right;
+        }
+
+        for(int i=0; i<4; i++)
+        {
+            int tmp_y= warp->getY()+dy[i];
+            int tmp_x= warp->getX()+dx[i];
+            //out of map
+            if((tmp_y<0)|| (tmp_x<0)|| (tmp_y>20) ||(tmp_x>20))
+                continue;
+            //if(board.stage[board.stageNum][tmp_y][tmp_x]=='$')
+            if(board.getCharAt(tmp_y, tmp_x)=='1' || board.getCharAt(tmp_y, tmp_x)=='2')
+                continue;
+
+            //if find empty
+            snake.setd(key[i]);
+            next = SnakePiece(tmp_y, tmp_x);
+            tmp_next= new SnakePiece(next);
+            break;
+        }
+    }
 }

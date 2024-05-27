@@ -3,6 +3,7 @@
 #include "snake.hpp"
 #include "board.hpp"
 #include "item.hpp"
+//#include "new_warp.hpp"
 
 namespace snake{
 class SnakeGame
@@ -30,7 +31,7 @@ public:
     void playingState();
 
     // 뱀이 다음 위치로 어떻게 나아가야하는지 icon에 따라 조종하는 함수
-    void handleNext(SnakePiece next);
+    void handleNext(SnakePiece& next);
 
     // 사과를 없애는(=먹는) 함수
     void eatApple();
@@ -55,7 +56,12 @@ public:
     void ItemUpdate();
     // =============================================
 
+    void createWarp();
+    void endWarp();
+    void checkWarp(SnakePiece& next, Warp *warp);
+
 private:
+    SnakePiece *tmp_next;
     Board board;
     Snake snake;
 
@@ -63,8 +69,9 @@ private:
 
     Apple *apple;
     Bomb *bomb;
-    // Warp1 *warp1;
-    // Warp2 *warp2;
+    //NewWarp newwarp;
 
+    Warp *warp1;
+    Warp *warp2;
 };
 }

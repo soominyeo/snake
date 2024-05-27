@@ -34,21 +34,9 @@ namespace snake{
         Bomb(int y = 0, int x = 0);
     };
 
-    // class Warp1 : public Item
-    // {
-    // public:
-    //     Warp1(int y = 0, int x = 0) : Item(y, x)
-    //     {
-    //         icon = '@';
-    //     }
-    // };
-
-    // class Warp2 : public Item
-    // {
-    // public:
-    //     Warp2(int y = 0, int x = 0) : Item(y, x)
-    //     {
-    //         icon = '$';
-    //     }
-    // };
+    class Warp: public Item
+    {
+    public:
+        Warp(int y = 0, int x = 0);
+    };
 }
