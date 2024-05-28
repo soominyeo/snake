@@ -20,6 +20,9 @@ namespace snake{
         // 게임 창을 stageNum 번째 stage로 초기화
         board.initialize(stageNum);
 
+        // missionboard 
+        missionboard.init();
+
         // snake queue를 게임 창 좌측 상단에 ###@ 형태로 초기화
         snake.initialize();
 
@@ -34,6 +37,11 @@ namespace snake{
         createBomb();
         // createWarp1();
         // createWarp2();
+
+        // 게임 초기화시 다시 카운터 해야하는 변수 초기화
+        apple_counter=0;
+        bomb_counter=0;
+        // warp_counter=0;
     }
 
     // 사과 만드는 함수
@@ -153,6 +161,9 @@ namespace snake{
         int nextRow = next.getY();
         int nextCol = next.getX();
 
+        // current_body_length
+        missionboard.drawCurrent_mission(snake.getSize()); 
+
         // 만약 다음으로 나아갈 위치가 ' '이라면
         // 이하 "뱀이 앞으로 나아가는 로직" 이라고 칭함
         if (board.getCharAt(nextRow, nextCol) == ' ')
@@ -178,8 +189,14 @@ namespace snake{
         // 사과를 먹는다면
         else if (board.getCharAt(nextRow, nextCol) == 'A')
         {
+            // 미션 보드에 Apple 먹은 횟수 업데이트
+            apple_counter++;
+            missionboard.drawApple_mission(get_apple_Counter()); 
             // 사과 먹는 함수 실행
             eatApple();
+
+            
+            
 
             // 뱀이 앞으로 나아가는 로직에서 꼬리 부분을 없애는 과정을 건너뛰면 된다
             snake.head().setIcon('#');
@@ -193,9 +210,14 @@ namespace snake{
         // 폭탄을 먹는다면
         else if (board.getCharAt(nextRow, nextCol) == 'B')
         {  
+
+            // 미션 보드에 Bomb 먹은 횟수 업데이트
+            bomb_counter++; // 먹으면 bomb(itemp.hpp)카운터 증가
+            missionboard.drawBomb_mission(get_bomb_Counter()); 
+
             // 폭탄을 먹는 함수 실행
             eatBomb();
-
+            
             // 꼬리를 한번 더 삭제하고 앞으로 나아가는 로직 진행
             board.add(snake.tail().getY(), snake.tail().getX(), ' ');
             snake.removeBody();
@@ -221,12 +243,15 @@ namespace snake{
     // 사과를 없애는(=먹는) 함수
     void SnakeGame::eatApple()
     {   
+        
         // 우선 보드에 기존의 사과 위치에다가 ' ' add한다
         board.add(apple->getY(), apple->getX(), ' ');
-
+        
         // 동적할당 했었던 apple 없애고 apple을 NULL로 하자
         delete apple;
         apple = NULL;
+
+        
 
     }
 
