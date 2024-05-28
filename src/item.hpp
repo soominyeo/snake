@@ -9,6 +9,8 @@ namespace snake{
     public:
         Item(int y = 0, int x = 0);
 
+        int Apple_counter=0;
+        int Bomb_counter=0; // 미션 counter
         int getX();
 
         int getY();
@@ -25,6 +27,9 @@ namespace snake{
     {
     public:
         Apple(int y = 0, int x = 0);
+        
+
+        
     };
 
     // Item 상속 받아서 icon만 'B'로 바꿈
@@ -32,6 +37,8 @@ namespace snake{
     {
     public:
         Bomb(int y = 0, int x = 0);
+
+        
     };
 
     class Warp: public Item

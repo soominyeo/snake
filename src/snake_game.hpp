@@ -4,6 +4,7 @@
 #include "board.hpp"
 #include "item.hpp"
 //#include "new_warp.hpp"
+#include "missionboard.hpp"
 
 namespace snake{
 class SnakeGame
@@ -59,12 +60,21 @@ public:
     void createWarp();
     void endWarp();
     void checkWarp(SnakePiece& next, Warp *warp);
+    // 아이템 카운터체크
+    int apple_counter=0; 
+    int bomb_counter=0; 
+    // int warp_counter=0;
+
+    // 아이템 카운터 반환 함수
+    int get_apple_Counter()  { return apple_counter; }
+    int get_bomb_Counter()  { return bomb_counter; }
+    // int get_warp_Counter()  { return warp_counter; }
 
 private:
     SnakePiece *tmp_next;
     Board board;
     Snake snake;
-
+    MissionBoard missionboard;
     bool game_over = false;
 
     Apple *apple;
@@ -73,5 +83,10 @@ private:
 
     Warp *warp1;
     Warp *warp2;
+    // Apple 과 Bomb이 동적으로 할당하여서 아이템먹어도 횟수가 업데이트 되지않음
+    // 그래서 snake_game.hpp에 item 변수 생성
+    
+    
+
 };
 }
