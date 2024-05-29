@@ -5,6 +5,8 @@
 #include "item.hpp"
 //#include "new_warp.hpp"
 #include "missionboard.hpp"
+#include <stdlib.h>
+#include <time.h>
 
 namespace snake{
 class SnakeGame
@@ -63,12 +65,12 @@ public:
     // 아이템 카운터체크
     int apple_counter=0; 
     int bomb_counter=0; 
-    // int warp_counter=0;
+    int warp_counter=0;
 
     // 아이템 카운터 반환 함수
     int get_apple_Counter()  { return apple_counter; }
     int get_bomb_Counter()  { return bomb_counter; }
-    // int get_warp_Counter()  { return warp_counter; }
+    int get_warp_Counter()  { return warp_counter; }
 
 private:
     SnakePiece *tmp_next;
