@@ -199,6 +199,7 @@ namespace snake{
             warp_counter++;
             missionboard.drawGateway_mission(get_warp_Counter());
 
+            tick_count1=0;
             if((next.getY()==warp1->getY()) && (next.getX()==warp1->getX())){
                 //check 4 direction of warp2
                 //UP, DOWN, RIGHT, LEFT
@@ -279,7 +280,7 @@ namespace snake{
 
         // 만약 다음으로 나아갈 위치가 ' '이라면
         // 이하 "뱀이 앞으로 나아가는 로직" 이라고 칭함
-        if (board.getCharAt(nextRow, nextCol) == ' ' || ((melon!=NULL) && (power==1) && (board.getCharAt(nextRow, nextCol) == '3')))
+        if (board.getCharAt(nextRow, nextCol) == ' ' || (board.getCharAt(nextRow, nextCol) == 'M') ||((melon!=NULL) && (power==1) && (board.getCharAt(nextRow, nextCol) == '3')))
         {   
             if((melon!=NULL) && (power==1) && (board.getCharAt(nextRow, nextCol) == '3'))
             {
@@ -291,6 +292,11 @@ namespace snake{
                 //delete melon
                 delete melon;
                 melon=NULL;
+            }
+            if(board.getCharAt(nextRow, nextCol) == 'M')
+            {
+                power++;
+                board.add(nextRow, nextCol, ' ');
             }
             // snake의 꼬리 위치에다가 ' ' add 한다
             board.add(snake.tail().getY(), snake.tail().getX(), ' ');
@@ -367,12 +373,6 @@ namespace snake{
             }
             
             board.setTimeout(tick);
-        }
-
-        else if(board.getCharAt(nextRow, nextCol) == 'M')
-        {
-            power++;
-            board.add(nextRow, nextCol, ' ');
         }
 
         // Wall(= '1')을 만났을 때, 뱀 몸통(=자기 자신)을 만났을 때
@@ -469,7 +469,7 @@ namespace snake{
             createStrawberry();
         }
 
-        if(melon!=NULL && power==0)
+        if((melon!=NULL) && (power==0)&& (board.getStageNum()!=0))
         {
             board.add(melon->getY(), melon->getX(), ' ');
             delete melon;
@@ -535,7 +535,7 @@ namespace snake{
             if((tmp_y<0)|| (tmp_x<0)|| (tmp_y>20) ||(tmp_x>20))
                 continue;
             //if(board.stage[board.stageNum][tmp_y][tmp_x]=='$')
-            if(board.getCharAt(tmp_y, tmp_x)=='1' || board.getCharAt(tmp_y, tmp_x)=='2')
+            if(board.getCharAt(tmp_y, tmp_x)=='1' || board.getCharAt(tmp_y, tmp_x)=='2'||board.getCharAt(tmp_y, tmp_x)=='$'||board.getCharAt(tmp_y, tmp_x)=='3')
                 continue;
 
             //if find empty
