@@ -27,7 +27,14 @@ public:
     // 폭탄 만드는 함수
     void createBomb();
 
+    // 딸기 만드는 함수
     void createStrawberry();
+
+    //create melon
+    void createMelon();
+
+    //create DWall
+    void createDWall();
 
     // 입력 받은 값에 따라 작동을 달리하는 로직
     void getInputState();
@@ -44,6 +51,7 @@ public:
     // 폭탄를 없애는(=먹는) 함수
     void eatBomb();
 
+    // 딸기를 없애는(=먹는) 함수
     void eatStrawberry();
 
     // stage 번호에 따라서 게임 창을 초기화하는 함수
@@ -66,18 +74,43 @@ public:
     void createWarp();
     void endWarp();
     void checkWarp(SnakePiece& next, Warp *warp);
+
     // 아이템 카운터체크
     int apple_counter=0; 
     int bomb_counter=0; 
     int warp_counter=0;
+    int strawberry_counter=0;
+    int melon_counter=0; //카운터 사용시 주석 제거
 
     // 아이템 카운터 반환 함수
     int get_apple_Counter()  { return apple_counter; }
     int get_bomb_Counter()  { return bomb_counter; }
     int get_warp_Counter()  { return warp_counter; }
+    int get_strawberry_Counter()  { return strawberry_counter; }
+    int get_melon_Counter()  { return melon_counter; } // 추가 아이템 사용시 주석 제거
+
+    int score=0;
+    int calculate_score(int index) {
+        switch (index) {
+        case 0: // 사과
+        case 1: // 폭탄
+        case 2: // 게이트
+        case 3: // 딸기
+        case 4: // 멜론
+            score += 100;
+            break;
+        case 5:
+            score += 1;
+            break;
+        default:
+            // index가 0~5가 아닌 경우, 아무 동작도 하지 않음
+            break;
+    }
+
+    return score;
+}
 
 private:
-    SnakePiece *tmp_next;
     Board board;
     Snake snake;
     MissionBoard missionboard;
@@ -85,14 +118,17 @@ private:
 
     Apple *apple;
     Bomb *bomb;
+    Melon *melon;
+    Strawberry *strawberry;
     //NewWarp newwarp;
 
     Warp *warp1;
     Warp *warp2;
-    // Apple 과 Bomb이 동적으로 할당하여서 아이템먹어도 횟수가 업데이트 되지않음
-    // 그래서 snake_game.hpp에 item 변수 생성
+    int tick_count1;
+    int tick_count2;
+    int DWall_y, DWall_x;
+    int power;
     
-    Strawberry *strawberry;
 
 };
 }

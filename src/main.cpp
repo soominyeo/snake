@@ -4,7 +4,6 @@
 #include <thread>
 
 using namespace snake;
-
 int main()
 {   
     // ncurses 시작
