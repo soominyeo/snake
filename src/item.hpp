@@ -26,24 +26,25 @@ namespace snake{
     class Apple : public Item
     {
     public:
-        Apple(int y = 0, int x = 0);
-        
-
-        
+        Apple(int y = 0, int x = 0);        
     };
 
     // Item 상속 받아서 icon만 'B'로 바꿈
     class Bomb : public Item
     {
     public:
-        Bomb(int y = 0, int x = 0);
-
-        
+        Bomb(int y = 0, int x = 0);  
     };
 
     class Warp: public Item
     {
     public:
         Warp(int y = 0, int x = 0);
+    };
+
+    class Strawberry : public Item
+    {
+    public:
+        Strawberry(int y = 0, int x = 0);
     };
 }

@@ -34,4 +34,9 @@ namespace snake{
     {
         icon = '$';
     }
+
+    Strawberry::Strawberry(int y, int x) : Item(y, x)
+    {
+        icon = 'S';
+    }
 }

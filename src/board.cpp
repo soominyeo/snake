@@ -99,7 +99,8 @@ namespace snake{
         // 21 21 크기의 창을 만들되, 중앙에 생성하도록 한다
         gameBoard = newwin(21, 21, (yMax / 2) - 10, (xMax / 2) - 10);
 
-        wtimeout(gameBoard, 300);
+        speedTick = 300;
+        wtimeout(gameBoard, speedTick);
     }
 
     // 초기화 함수
@@ -109,6 +110,9 @@ namespace snake{
         wclear(gameBoard);
 
         stageNum = num;
+
+        speedTick = 300;
+        wtimeout(gameBoard, speedTick);
         
 
         // stage의 첫번째 맵을 그대로 가져와서 gameBoard 메모리상에 복사한다
@@ -156,6 +160,7 @@ namespace snake{
     void Board::setTimeout(int tick)
     {
         wtimeout(gameBoard, tick);
+        speedTick = tick;
     }
 
     // gameBoard 새로고침
@@ -175,5 +180,11 @@ namespace snake{
     void Board::getWarpPos(int &y, int &x)
     {
         while((mvwinch(gameBoard, y = rand() % 22, x = rand() % 22)) != '1');
+    }
+
+    // 게임 화면의 속도 값 구하기
+    int Board::getSpeedTick()
+    {
+        return speedTick;
     }
 }
