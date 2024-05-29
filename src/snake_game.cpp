@@ -17,6 +17,7 @@ namespace snake{
         delete warp1;
         delete warp2;
         delete tmp_next;
+        delete strawberry;
     }
 
     // 게임 시작할 시(= 생성자 호출 될 시) 진행하는 로직
@@ -27,6 +28,9 @@ namespace snake{
 
         // missionboard 
         missionboard.init();
+
+        // 초기화될 때마다 rand 시드 바꾼다
+        srand(time(NULL));
 
         // snake queue를 게임 창 좌측 상단에 ###@ 형태로 초기화
         snake.initialize();
@@ -42,6 +46,7 @@ namespace snake{
         createBomb();
         createWarp();
         tmp_next=NULL;
+        createStrawberry();
 
         // 게임 초기화시 다시 카운터 해야하는 변수 초기화
         apple_counter=0;
@@ -87,6 +92,20 @@ namespace snake{
         board. getWarpPos(y,x);
         warp2=new Warp(y,x);
         board.add(y, x, '$');
+    }
+
+    // 딸기(= speedUP) 만드는 함수
+    void SnakeGame::createStrawberry()
+    {
+        int y, x;
+
+        // 아이템이 생성될 수 있는 위치 get하기
+        board.getItemPos(y, x);
+
+        strawberry = new Strawberry(y, x);
+
+        // 게임 창의 메모리 상으로 딸기 추가
+        board.add(y, x, 'S');
     }
 
     // 입력 받은 값에 따라 작동을 달리하는 로직
@@ -186,6 +205,11 @@ namespace snake{
             createWarp();
         }
 
+        if (strawberry == NULL)
+        {
+            createStrawberry();
+        }
+
         // 만약 snake의 몸 길이가 3 미만이라면 게임 오버로 간주
         if (snake.getSize() < 3)
         {
@@ -233,9 +257,6 @@ namespace snake{
             // 사과 먹는 함수 실행
             eatApple();
 
-            
-            
-
             // 뱀이 앞으로 나아가는 로직에서 꼬리 부분을 없애는 과정을 건너뛰면 된다
             snake.head().setIcon('#');
             board.add(snake.head().getY(), snake.head().getX(), '#');
@@ -271,6 +292,21 @@ namespace snake{
             board.add(snake.head().getY(), snake.head().getX(), '%');
         }
 
+        else if (board.getCharAt(nextRow, nextCol) == 'S')
+        {
+            // 사과 먹는 함수 실행
+            eatStrawberry();
+
+            int tick = board.getSpeedTick();
+
+            if (tick > 50)
+            {
+                tick -= 50;
+            }
+            
+            board.setTimeout(tick);
+        }
+
         // Wall(= '1')을 만났을 때, 뱀 몸통(=자기 자신)을 만났을 때
         else
         {
@@ -288,9 +324,6 @@ namespace snake{
         // 동적할당 했었던 apple 없애고 apple을 NULL로 하자
         delete apple;
         apple = NULL;
-
-        
-
     }
 
     // 폭탄를 없애는(=먹는) 함수
@@ -302,6 +335,17 @@ namespace snake{
         // 동적할당 했었던 bomb 없애고 bomb을 NULL로 하자
         delete bomb;
         bomb = NULL;
+    }
+
+    // 딸기를 없애는(=먹는) 함수
+    void SnakeGame::eatStrawberry()
+    {   
+        // 우선 보드에 기존의 딸기 위치에다가 ' ' add한다
+        board.add(strawberry->getY(), strawberry->getX(), ' ');
+
+        // 동적할당 했었던 딸기 없애고 딸기를 NULL로 하자
+        delete strawberry;
+        strawberry = NULL;
     }
 
     // stage 번호에 따라서 게임 창을 초기화하는 함수
@@ -350,6 +394,11 @@ namespace snake{
             // 기존 코드가 eatBomb()과 똑같아서 대체함
             eatBomb();
             createBomb();
+        }
+
+        if (strawberry != NULL) {
+            eatStrawberry();
+            createStrawberry();
         }
     }
     // ==============================================

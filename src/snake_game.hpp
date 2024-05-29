@@ -5,6 +5,8 @@
 #include "item.hpp"
 //#include "new_warp.hpp"
 #include "missionboard.hpp"
+#include <stdlib.h>
+#include <time.h>
 
 namespace snake{
 class SnakeGame
@@ -25,6 +27,8 @@ public:
     // 폭탄 만드는 함수
     void createBomb();
 
+    void createStrawberry();
+
     // 입력 받은 값에 따라 작동을 달리하는 로직
     void getInputState();
 
@@ -39,6 +43,8 @@ public:
 
     // 폭탄를 없애는(=먹는) 함수
     void eatBomb();
+
+    void eatStrawberry();
 
     // stage 번호에 따라서 게임 창을 초기화하는 함수
     void setStage(int stageNum);
@@ -86,7 +92,7 @@ private:
     // Apple 과 Bomb이 동적으로 할당하여서 아이템먹어도 횟수가 업데이트 되지않음
     // 그래서 snake_game.hpp에 item 변수 생성
     
-    
+    Strawberry *strawberry;
 
 };
 }

@@ -36,10 +36,14 @@ namespace snake{
 
         void getWarpPos(int &y, int &x);
 
+        // 게임 화면의 속도 값 get하기
+        int getSpeedTick();
+
     private:
         void construct(int height, int width);
         int xMax, yMax;
         WINDOW *gameBoard;
         int stageNum;
+        int speedTick;
     };
 }
