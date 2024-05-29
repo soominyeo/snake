@@ -28,6 +28,9 @@ namespace snake{
         // missionboard 
         missionboard.init();
 
+        // 초기화될 때마다 rand 시드 바꾼다
+        srand(time(NULL));
+
         // snake queue를 게임 창 좌측 상단에 ###@ 형태로 초기화
         snake.initialize();
 
@@ -46,7 +49,7 @@ namespace snake{
         // 게임 초기화시 다시 카운터 해야하는 변수 초기화
         apple_counter=0;
         bomb_counter=0;
-        // warp_counter=0;
+        warp_counter=0;
     }
 
     // 사과 만드는 함수
@@ -153,6 +156,9 @@ namespace snake{
 
         if(board.getCharAt(next.getY(), next.getX())== '$')
         {
+            warp_counter++;
+            missionboard.drawGateway_mission(get_warp_Counter());
+
             if((next.getY()==warp1->getY()) && (next.getX()==warp1->getX())){
                 //check 4 direction of warp2
                 //UP, DOWN, RIGHT, LEFT
