@@ -47,4 +47,10 @@ namespace snake{
     public:
         Strawberry(int y = 0, int x = 0);
     };
+
+    class Melon: public Item
+    {
+    public:
+        Melon(int y = 0, int x = 0);
+    };
 }

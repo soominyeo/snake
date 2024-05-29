@@ -39,6 +39,9 @@ namespace snake{
         // 게임 화면의 속도 값 get하기
         int getSpeedTick();
 
+        // get destroyed wall
+        void getDWallPos(int &y, int &x);
+
     private:
         void construct(int height, int width);
         int xMax, yMax;

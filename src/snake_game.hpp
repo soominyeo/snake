@@ -27,6 +27,12 @@ public:
     // 폭탄 만드는 함수
     void createBomb();
 
+    //create melon
+    void createMelon();
+
+    //create DWall
+    void createDWall();
+
     void createStrawberry();
 
     // 입력 받은 값에 따라 작동을 달리하는 로직
@@ -85,10 +91,15 @@ private:
 
     Apple *apple;
     Bomb *bomb;
+    Melon *melon;
     //NewWarp newwarp;
 
     Warp *warp1;
     Warp *warp2;
+    int tick_count1;
+    int tick_count2;
+    int DWall_y, DWall_x;
+    int power;
     // Apple 과 Bomb이 동적으로 할당하여서 아이템먹어도 횟수가 업데이트 되지않음
     // 그래서 snake_game.hpp에 item 변수 생성
     

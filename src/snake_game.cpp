@@ -17,6 +17,7 @@ namespace snake{
         delete warp1;
         delete warp2;
         delete tmp_next;
+        delete melon;
         delete strawberry;
     }
 
@@ -46,6 +47,14 @@ namespace snake{
         createBomb();
         createWarp();
         tmp_next=NULL;
+        if(board.getStageNum()!=0){
+            createMelon();
+            for(int i=0; i<3; i++)
+                createDWall();
+        }
+        tick_count1=10;
+        tick_count2=10;
+        power=0;
         createStrawberry();
 
         // 게임 초기화시 다시 카운터 해야하는 변수 초기화
@@ -106,6 +115,21 @@ namespace snake{
 
         // 게임 창의 메모리 상으로 딸기 추가
         board.add(y, x, 'S');
+    }
+
+    void SnakeGame::createMelon()
+    {
+        int y, x;
+        board.getItemPos(y, x);
+        melon = new Melon(y, x);
+        board.add(y, x, 'M');
+    }
+
+    void SnakeGame::createDWall()
+    {
+        int y, x;
+        board.getDWallPos(y, x);
+        board.add(y, x, '3');  
     }
 
     // 입력 받은 값에 따라 작동을 달리하는 로직
@@ -190,7 +214,26 @@ namespace snake{
             handleNext(next);
 
         if((tmp_next!=NULL)&&(board.getCharAt(tmp_next->getY(), tmp_next->getX()) !='#')&& (board.getCharAt(tmp_next->getY(), tmp_next->getX()) !='%'))
+        
+        if(warp1!=NULL && warp2!=NULL)
+        {
+            tick_count1++;
+        }
+
+        if(melon!=NULL)
+        {
+            tick_count2++;
+        }
+
+        if(tick_count1==snake.getSize()+2)
+        {
             endWarp();
+        }
+
+        if(tick_count2==snake.getSize()+2)
+        {
+            board.add(DWall_y,DWall_x, '1');
+        }
 
         // 만약 사과나 폭탄이 NULL 상태라면 생성해야 한다
         if (apple == NULL)
@@ -218,6 +261,11 @@ namespace snake{
         {
             game_over = true;
         }
+
+        if(melon ==NULL)
+        {
+            createMelon();
+        }
     }
 
     // 뱀이 다음 위치로 어떻게 나아가야하는지 icon에 따라 조종하는 함수
@@ -231,8 +279,19 @@ namespace snake{
 
         // 만약 다음으로 나아갈 위치가 ' '이라면
         // 이하 "뱀이 앞으로 나아가는 로직" 이라고 칭함
-        if (board.getCharAt(nextRow, nextCol) == ' ')
+        if (board.getCharAt(nextRow, nextCol) == ' ' || ((melon!=NULL) && (power==1) && (board.getCharAt(nextRow, nextCol) == '3')))
         {   
+            if((melon!=NULL) && (power==1) && (board.getCharAt(nextRow, nextCol) == '3'))
+            {
+                DWall_y=nextRow, DWall_x=nextCol;
+                tick_count2=0;
+                createDWall();
+                power=0;
+
+                //delete melon
+                delete melon;
+                melon=NULL;
+            }
             // snake의 꼬리 위치에다가 ' ' add 한다
             board.add(snake.tail().getY(), snake.tail().getX(), ' ');
             // snake의 꼬리를 없앤다
@@ -308,6 +367,12 @@ namespace snake{
             }
             
             board.setTimeout(tick);
+        }
+
+        else if(board.getCharAt(nextRow, nextCol) == 'M')
+        {
+            power++;
+            board.add(nextRow, nextCol, ' ');
         }
 
         // Wall(= '1')을 만났을 때, 뱀 몸통(=자기 자신)을 만났을 때
@@ -402,6 +467,14 @@ namespace snake{
         if (strawberry != NULL) {
             eatStrawberry();
             createStrawberry();
+        }
+
+        if(melon!=NULL && power==0)
+        {
+            board.add(melon->getY(), melon->getX(), ' ');
+            delete melon;
+            melon =NULL;
+            createMelon();
         }
     }
     // ==============================================
