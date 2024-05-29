@@ -24,9 +24,10 @@ all : $(TARGET)
 
 $(TARGET): $$(DEPENDENCY)
 	$(CC) -o $@ $(filter %.c %.cpp %.o, $^) $(CCFLAGS) $(LDFLAGS)
-	mkdir -p $(BUILD_PATH) && mv $@ $(addprefix $(BUILD_PATH)/,$@)
+	@mkdir -p $(BUILD_PATH) && mv $@ $(addprefix $(BUILD_PATH)/,$@)
 
 $(OBJ_PATH)/%.o : $(SRC_PATH)/%.cpp $(wildcard $(SRC_PATH)/%.hpp)
+	@mkdir -p $(OBJ_PATH)
 	$(CC) -c $< -o $@ $(CCFLAGS)
 
 # 의존성 목록 출력
@@ -37,4 +38,5 @@ list:
 
 # 깨끗하게 청소
 clean:
-	rm -rf $(OBJECTS) $(TARGET)
+	@rm -rfv $(OBJECTS) $(TARGET)
+	@rm -rfv $(addprefix $(BUILD_PATH)/,$(TARGET))
