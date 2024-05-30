@@ -39,4 +39,9 @@ namespace snake{
     {
         icon = 'S';
     }
+
+    Melon::Melon(int y, int x) : Item(y, x)
+    {
+        icon = 'M';
+    }
 }
