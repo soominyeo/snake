@@ -25,6 +25,9 @@ namespace snake{
         // 현재 게임의 stage 번호 get하기
         int getStageNum();
 
+        // 게임 스테이지 설정
+        void setStageNum(int num);
+
         // 게임 속도 조절하기
         void setTimeout(int tick);
 
@@ -43,6 +46,7 @@ namespace snake{
         void getDWallPos(int &y, int &x);
 
     private:
+        void construct(int height, int width);
         int xMax, yMax;
         WINDOW *gameBoard;
         int stageNum;
