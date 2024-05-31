@@ -1,6 +1,4 @@
 #include "snake_game.hpp"
-#include <chrono>
-#include <thread>
 
 namespace snake{
     // 생성자 호출 시 게임 창을 stage 0번으로 초기화
@@ -16,7 +14,6 @@ namespace snake{
         delete bomb;
         delete warp1;
         delete warp2;
-        delete tmp_next;
         delete melon;
         delete strawberry;
     }
@@ -46,7 +43,6 @@ namespace snake{
         createApple();
         createBomb();
         createWarp();
-        tmp_next=NULL;
         if(board.getStageNum()!=0){
             createMelon();
             for(int i=0; i<3; i++)
@@ -214,8 +210,6 @@ namespace snake{
             // next 라는 SnakePiece를 가지고 뱀을 조종
             handleNext(next);
 
-        if((tmp_next!=NULL)&&(board.getCharAt(tmp_next->getY(), tmp_next->getX()) !='#')&& (board.getCharAt(tmp_next->getY(), tmp_next->getX()) !='%'))
-        
         if(warp1!=NULL && warp2!=NULL)
         {
             tick_count1++;
@@ -488,9 +482,6 @@ namespace snake{
         board.add(warp2->getY(), warp2->getX(), '1');
         delete warp2;
         warp2=NULL;
-
-        delete tmp_next;
-        tmp_next=NULL;
     }
 
     void SnakeGame::checkWarp(SnakePiece& next, Warp *warp)
@@ -541,7 +532,6 @@ namespace snake{
             //if find empty
             snake.setd(key[i]);
             next = SnakePiece(tmp_y, tmp_x);
-            tmp_next= new SnakePiece(next);
             break;
         }
     }

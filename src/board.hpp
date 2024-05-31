@@ -43,7 +43,6 @@ namespace snake{
         void getDWallPos(int &y, int &x);
 
     private:
-        void construct(int height, int width);
         int xMax, yMax;
         WINDOW *gameBoard;
         int stageNum;

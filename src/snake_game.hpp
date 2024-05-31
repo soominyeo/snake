@@ -3,10 +3,7 @@
 #include "snake.hpp"
 #include "board.hpp"
 #include "item.hpp"
-//#include "new_warp.hpp"
 #include "missionboard.hpp"
-#include <stdlib.h>
-#include <time.h>
 
 namespace snake{
 class SnakeGame
@@ -83,7 +80,6 @@ public:
     int get_warp_Counter()  { return warp_counter; }
 
 private:
-    SnakePiece *tmp_next;
     Board board;
     Snake snake;
     MissionBoard missionboard;
