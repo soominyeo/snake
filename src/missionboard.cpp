@@ -41,7 +41,7 @@ void MissionBoard::init() {
     drawBomb_mission(0); // 초기 값 0으로 설정
     drawGateway_mission(0); // 초기 값 0으로 설정
     drawStrawberry_mission(0); // 초기 값 0으로 설정
-    drawMelon_mission(0); // 초기 값 0으로 설정
+    // drawMelon_mission(0); // 초기 값 0으로 설정
 }
 
 void MissionBoard::drawBorder() {

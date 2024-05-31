@@ -58,7 +58,8 @@ int main()
     // 그게 아니라면 진짜로 게임 오버라는 뜻
     else
     {
-        printw("Game Over!!!");
+        printw("Game Over!!!\n");
+        printw("Your are Score: %d",game.score);
     }
     
     // 입력 값 받을 때 까지 대기
