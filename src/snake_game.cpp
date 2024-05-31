@@ -64,6 +64,7 @@ namespace snake{
         createApple();
         createBomb();
         createWarp();
+        createStrawberry();
         if(board.getStageNum()!=0){
             createMelon();
             for(int i=0; i<3; i++)
@@ -72,15 +73,13 @@ namespace snake{
         tick_count1=10;
         tick_count2=10;
         power=0;
-        createStrawberry();
-
-        
-
         // 게임 초기화시 다시 카운터 해야하는 변수 초기화
         apple_counter=0;
         bomb_counter=0;
         warp_counter=0;
-    }
+        strawberry_counter=0;
+        melon_counter=0;   
+        }
 
     // 사과 만드는 함수
     void SnakeGame::createApple()
@@ -135,7 +134,6 @@ namespace snake{
         // 게임 창의 메모리 상으로 딸기 추가
         board.add(y, x, 'S');
     }
-
     void SnakeGame::createMelon()
     {
         int y, x;
@@ -204,6 +202,7 @@ namespace snake{
     // 게임을 플레이하는 동안 진행하는 로직
     void SnakeGame::playingState()
     {
+        missionboard.drawScore(calculate_score(5));
         // 스테이지가 4라는 것은 스테이지 끝이라는 뜻
         // if (getStageNum() == 4)
         // {   
@@ -217,6 +216,7 @@ namespace snake{
         if(board.getCharAt(next.getY(), next.getX())== '$')
         {
             warp_counter++;
+            calculate_score(2);
             missionboard.drawGateway_mission(get_warp_Counter());
 
             tick_count1=0;
@@ -233,7 +233,7 @@ namespace snake{
         else
             // next 라는 SnakePiece를 가지고 뱀을 조종
             handleNext(next);
-        
+
         if(warp1!=NULL && warp2!=NULL)
         {
             tick_count1++;
@@ -253,7 +253,7 @@ namespace snake{
         {
             board.add(DWall_y,DWall_x, '1');
         }
-
+    
         // 만약 사과나 폭탄이 NULL 상태라면 생성해야 한다
         if (apple == NULL)
         {
@@ -280,10 +280,16 @@ namespace snake{
         {
             game_over = true;
         }
-
         if(melon ==NULL)
         {
-            createMelon();
+            createMelon();}
+            // 만약 미션 목표를 달성했으면 다음 스테이지로 
+        if((get_apple_Counter()>=5)&&(get_bomb_Counter()>=5)&&(get_warp_Counter()>=5)&&(snake.getSize()>=5)&&(get_strawberry_Counter()>=5)&&(get_melon_Counter()>=5))
+        {
+                int num = getStageNum();
+                // 다음 스테이지로 넘어가야하므로 ++num 한 것
+                initialize(++num);
+        
         }
     }
 
@@ -293,7 +299,7 @@ namespace snake{
         int nextRow = next.getY();
         int nextCol = next.getX();
 
-        // current_body_length
+        // 미션 보드에 현재 몸길이 출력
         missionboard.drawCurrent_mission(snake.getSize()); 
 
         // 만약 다음으로 나아갈 위치가 ' '이라면
@@ -312,7 +318,10 @@ namespace snake{
                 melon=NULL;
             }
             if(board.getCharAt(nextRow, nextCol) == 'M')
-            {
+            {   
+                melon_counter++;
+                calculate_score(4);
+                missionboard.drawMelon_mission(get_melon_Counter()); 
                 power++;
                 board.add(nextRow, nextCol, ' ');
             }
@@ -339,6 +348,7 @@ namespace snake{
         {
             // 미션 보드에 Apple 먹은 횟수 업데이트
             apple_counter++;
+            calculate_score(0);
             missionboard.drawApple_mission(get_apple_Counter()); 
             // 사과 먹는 함수 실행
             eatApple();
@@ -358,6 +368,7 @@ namespace snake{
 
             // 미션 보드에 Bomb 먹은 횟수 업데이트
             bomb_counter++; // 먹으면 bomb(itemp.hpp)카운터 증가
+            calculate_score(1);
             missionboard.drawBomb_mission(get_bomb_Counter()); 
 
             // 폭탄을 먹는 함수 실행
@@ -380,7 +391,12 @@ namespace snake{
 
         else if (board.getCharAt(nextRow, nextCol) == 'S')
         {
-            // 사과 먹는 함수 실행
+             // 미션 보드에 Strawberry 먹은 횟수 업데이트
+            strawberry_counter++; // 먹으면 strawberry(itemp.hpp)카운터 증가
+            calculate_score(3);
+            missionboard.drawStrawberry_mission(get_strawberry_Counter());
+
+            // 딸기 먹는 함수 실행
             eatStrawberry();
 
             int tick = board.getSpeedTick();
@@ -392,7 +408,6 @@ namespace snake{
             
             board.setTimeout(tick);
         }
-
         // Wall(= '1')을 만났을 때, 뱀 몸통(=자기 자신)을 만났을 때
         else
         {
@@ -562,6 +577,7 @@ namespace snake{
             //if find empty
             snake.setd(key[i]);
             next = SnakePiece(tmp_y, tmp_x);
+
             break;
         }
     }

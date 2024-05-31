@@ -4,7 +4,6 @@
 #include <thread>
 
 using namespace snake;
-
 int main()
 {   
     // ncurses 시작
@@ -88,7 +87,10 @@ int main()
         }
         // 게임 오버가 되면 창 클리어하고 안내 메세지 출력
         clear();
-        printw("Game Over!!! \nDo You Want Quit? [q]\nRestart [Press Any Key]");
+        printw("Game Over!!!\n");
+        printw("Your Score: %d\n",game.score);
+        printw("Do You Want Quit? [q] / Restart: [Press Any Key]");
+
 
         // 만약 q를 눌렀으면 while문 빠져 나간다
         char ch = getch();

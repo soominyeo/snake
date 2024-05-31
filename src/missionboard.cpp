@@ -3,7 +3,7 @@
 namespace snake {
 
 MissionBoard::MissionBoard() :
-    height(11), width(50), start_y(1), start_x(1), goal(5) {}
+    height(17), width(50), start_y(1), start_x(1), goal(5) {}
 
 void MissionBoard::init() {
     // ncurses 초기화
@@ -35,16 +35,23 @@ void MissionBoard::init() {
 
     // draw methods 호출
     drawBorder();
+    drawScore(0);
     drawCurrent_mission(0); // 초기 값 0으로 설정
     drawApple_mission(0); // 초기 값 0으로 설정
     drawBomb_mission(0); // 초기 값 0으로 설정
     drawGateway_mission(0); // 초기 값 0으로 설정
+    drawStrawberry_mission(0); // 초기 값 0으로 설정
+    // drawMelon_mission(0); // 초기 값 0으로 설정
 }
 
 void MissionBoard::drawBorder() {
     // 보더 그리기
     wborder(win, '|', '|', '-', '-', '+', '+', '+', '+');
     mvwprintw(win, 0, 1, " Mission Board ");
+    wrefresh(win);
+}
+void MissionBoard::drawScore(int Score) {
+    mvwprintw(win, start_y + 13, 20, "Score: %d", Score);
     wrefresh(win);
 }
 
@@ -70,6 +77,17 @@ void MissionBoard::drawGateway_mission(int Gateway) {
     int mission_y = start_y + 7;
     int mission_index = 3;
     drawMongu_mission(mission_y, Gateway, goal, mission_index);
+}
+
+void MissionBoard::drawStrawberry_mission(int Strawberry) {
+    int mission_y = start_y + 9;
+    int mission_index = 4;
+    drawMongu_mission(mission_y, Strawberry, goal, mission_index);
+}
+void MissionBoard::drawMelon_mission(int Melon) {
+    int mission_y = start_y + 11;
+    int mission_index = 5;
+    drawMongu_mission(mission_y, Melon, goal, mission_index);
 }
 
 void MissionBoard::drawMongu_mission(int y, int mission, int goal, int mission_index) {
