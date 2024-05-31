@@ -73,6 +73,7 @@ public:
     //item update per 7seconds
     void ItemUpdate();
     // =============================================
+    void deleteItem();
 
     void createWarp();
     void endWarp();

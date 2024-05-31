@@ -214,6 +214,11 @@ namespace snake{
         while((mvwinch(gameBoard, y = rand() %19 +1, x = rand() %19 +1)) != '1');
     }
 
+    void Board::getBonusWallPos(int &y, int &x)
+    {
+        while((mvwinch(gameBoard, y = rand() %17 +2, x = rand() %17 +2)) != ' ');
+    }
+
     // 게임 화면의 속도 값 구하기
     int Board::getSpeedTick()
     {

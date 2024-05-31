@@ -98,8 +98,9 @@ int main()
         {
             break;
         }
-        // 다른 키를 눌렀으면 게임 오버된 스테이지로 초기화하고 게임 진행
+        // 다른 키를 눌렀으면 게임 오버된 스테이지로 초기화하고 score 0점으로 게임 진행
         clear();
+        game.score = 0;
         game.setGameOver(false);
         stage = game.getStageNum();
         game.initialize(stage);
