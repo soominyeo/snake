@@ -15,55 +15,97 @@ int main()
     // 커서 안보이게 설정
     curs_set(0);
 
+    // 게임 스테이지 저장하는 변수
+    int stage = 0;
+
     // 게임 스타트
-    SnakeGame game;
+    SnakeGame game(stage);
 
-    // ==혜인님 코드 (일정 시간 지나면 아이템 업데이트 기능)==
-    // 시작 시간 구함
-    auto start_time = std::chrono::steady_clock::now();
-    // =============================================
-
-    // 게임 오버가 될 때까지
-    while (!game.isOver())
+    // 게임 무한 반복
+    while (true)
     {   
-        // 게임에서 입력 값에 따라 바뀌는 로직
-        game.getInputState();
-
-        // 게임하는 중 진행되는 로직
-        game.playingState();
-
-        // 게임 새로고침(= 실제로 창에 표시하는 단계)
-        game.redraw();
-
-        // ==혜인님 코드 (일정 시간 지나면 아이템 업데이트 기능)==
-        //특정 시간 구함
-        auto end_time = std::chrono::steady_clock::now();
-
-        //시간 계산(특정 시간 - 시작 시간)
-        auto temp= std::chrono::duration_cast<std::chrono::seconds>(end_time-start_time).count();
         
-        //7초가 됐을 때
-        if(temp>=7){
-            game.ItemUpdate();
-            start_time=end_time;
-        }
-        // ==============================================
-    }
+        // ==혜인님 코드 (일정 시간 지나면 아이템 업데이트 기능)==
+        // 시작 시간 구함
+        auto start_time = std::chrono::steady_clock::now();
+        // =============================================
 
-    // 게임 오버 되어서 빠져 나왔을 때 스테이지 넘버가 4라는 것은 클리어 했다는 뜻
-    if (game.getStageNum() == 4)
-    {
-        printw("Game Clear!!!");
-    }
-    // 그게 아니라면 진짜로 게임 오버라는 뜻
-    else
-    {
+        // 게임 오버가 될 때까지
+        while (!game.isOver())
+        {   
+            // stage는 현 게임의 스테이지를 계속 업데이트
+            stage = game.getStageNum();
+            
+            // 몇 스테이지인지 출력
+            switch (stage)
+            {
+            case 0:
+                mvprintw(0, 0, "Stage 1");
+                refresh();
+                break;
+            case 1:
+                mvprintw(0, 0, "Stage 2");
+                refresh();
+                break;
+            case 2:
+                mvprintw(0, 0, "Stage 3");
+                refresh();
+                break;
+            case 3:
+                mvprintw(0, 0, "Last Stage!");
+                refresh();
+                break;
+            
+            default:
+                mvprintw(0, 0, "***Bonus Stage***");
+                refresh();
+                break;
+            }
+            
+            // 게임에서 입력 값에 따라 바뀌는 로직
+            game.getInputState();
+
+            // 게임하는 중 진행되는 로직
+            game.playingState();
+
+            // 게임 새로고침(= 실제로 창에 표시하는 단계)
+            game.redraw();
+
+            // ==혜인님 코드 (일정 시간 지나면 아이템 업데이트 기능)==
+            //특정 시간 구함
+            auto end_time = std::chrono::steady_clock::now();
+
+            //시간 계산(특정 시간 - 시작 시간)
+            auto temp= std::chrono::duration_cast<std::chrono::seconds>(end_time-start_time).count();
+            
+            //7초가 됐을 때
+            if(temp>=7){
+                game.ItemUpdate();
+                start_time=end_time;
+            }
+            // ==============================================
+        }
+        // 게임 오버가 되면 창 클리어하고 안내 메세지 출력
+        clear();
         printw("Game Over!!!\n");
-        printw("Your are Score: %d",game.score);
+        printw("Your Score: %d\n",game.score);
+        printw("Do You Want Quit? [q] / Restart: [Press Any Key]");
+
+
+        // 만약 q를 눌렀으면 while문 빠져 나간다
+        char ch = getch();
+        if (ch == 'q')
+        {
+            break;
+        }
+        // 다른 키를 눌렀으면 게임 오버된 스테이지로 초기화하고 게임 진행
+        clear();
+        game.setGameOver(false);
+        stage = game.getStageNum();
+        game.initialize(stage);
     }
     
-    // 입력 값 받을 때 까지 대기
-    getch();
+    
     // ncurses 종료
     endwin();
 }

@@ -13,7 +13,7 @@ class SnakeGame
 {
 public:
     // 생성자 호출 시 게임 창을 stage 0번으로 초기화
-    SnakeGame();
+    SnakeGame(int stageNum = 0);
 
     // 소멸자 호출 시 동적으로 할당했던 변수 delete
     ~SnakeGame();
@@ -26,7 +26,7 @@ public:
 
     // 폭탄 만드는 함수
     void createBomb();
-
+  
     // 딸기 만드는 함수
     void createStrawberry();
 
@@ -62,6 +62,9 @@ public:
 
     // 게임 오버 됐는지 확인하는 함수
     bool isOver();
+
+    // 게임 오버를 설정하는 함수
+    void setGameOver(bool on);
 
     // 게임 새로고침
     void redraw();
@@ -128,7 +131,5 @@ private:
     int tick_count2;
     int DWall_y, DWall_x;
     int power;
-    
-
 };
 }
