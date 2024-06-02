@@ -1,11 +1,22 @@
 #include <ncurses.h>
 #include "snake_game.hpp"
+#include "leaderboard.hpp"
 #include <chrono>
 #include <thread>
+#include <iostream>
+#include <string>
+#include <algorithm>
 
 using namespace snake;
 int main()
 {   
+    // before game begins
+    std::string name;
+    std::cout << "please enter your name:";
+    std::cin >> name;
+
+    name.erase(std::remove(name.begin(), name.end(), ','), name.end());
+
     // ncurses 시작
     initscr();
     // 일단 초기화 진행
@@ -20,6 +31,8 @@ int main()
 
     // 게임 스타트
     SnakeGame game(stage);
+    LeaderBoard leaderBoard;
+    leaderBoard.init();
 
     // 게임 무한 반복
     while (true)
@@ -87,9 +100,11 @@ int main()
         }
         // 게임 오버가 되면 창 클리어하고 안내 메세지 출력
         clear();
-        printw("Game Over!!!\n");
-        printw("Your Score: %d\n",game.score);
-        printw("Do You Want Quit? [q] / Restart: [Press Any Key]");
+        leaderBoard.load();
+        leaderBoard.addRank(Rank(name, game.score));
+        leaderBoard.save();
+        leaderBoard.show();
+        mvprintw(getmaxy(stdscr)-1, 0, "Game Over!!! Do You Want Quit? [q] / Restart: [Press Any Key]");
 
 
         // 만약 q를 눌렀으면 while문 빠져 나간다
