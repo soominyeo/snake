@@ -40,3 +40,4 @@ list:
 clean:
 	@rm -rfv $(OBJECTS) $(TARGET)
 	@rm -rfv $(addprefix $(BUILD_PATH)/,$(TARGET))
+	@rm -f ranking debug
