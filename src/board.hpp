@@ -45,6 +45,9 @@ namespace snake{
         // get destroyed wall
         void getDWallPos(int &y, int &x);
 
+        // 보너스 벽 위치 get
+        void getBonusWallPos(int &y, int &x);
+
     private:
         void construct(int height, int width);
         int xMax, yMax;

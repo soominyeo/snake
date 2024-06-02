@@ -40,8 +40,8 @@ namespace snake{
             for (int i = 0; i < 20; i++)
             {
                 int y, x;
-                board.getItemPos(y, x);
-                board.add(y, x, '1');
+                board.getBonusWallPos(y, x);
+                board.add(y, x, '3');
             }
         }
 
@@ -69,6 +69,7 @@ namespace snake{
             createMelon();
             for(int i=0; i<3; i++)
                 createDWall();
+            deleteItem();
         }
         tick_count1=10;
         tick_count2=10;
@@ -203,13 +204,7 @@ namespace snake{
     void SnakeGame::playingState()
     {
         missionboard.drawScore(calculate_score(5));
-        // 스테이지가 4라는 것은 스테이지 끝이라는 뜻
-        // if (getStageNum() == 4)
-        // {   
-        //     // 게임 오버로 하자
-        //     game_over = true;
-        // }
-
+        
         // next는 snake가 다음 어디로 가야할지 그 위치의 값을 가진 SnakePiece이다
         SnakePiece next = snake.nexthead();
 
@@ -280,16 +275,22 @@ namespace snake{
         {
             game_over = true;
         }
-        if(melon ==NULL)
+        if(melon ==NULL && board.getStageNum() != 0)
         {
-            createMelon();}
-            // 만약 미션 목표를 달성했으면 다음 스테이지로 
-        if((get_apple_Counter()>=5)&&(get_bomb_Counter()>=5)&&(get_warp_Counter()>=5)&&(snake.getSize()>=5)&&(get_strawberry_Counter()>=5)&&(get_melon_Counter()>=5))
-        {
-                int num = getStageNum();
-                // 다음 스테이지로 넘어가야하므로 ++num 한 것
-                initialize(++num);
+            createMelon();
+        }
         
+        // 만약 미션 목표를 달성했으면 다음 스테이지로 
+        if((get_apple_Counter()>=5)&&(get_bomb_Counter()>=5)&&(get_warp_Counter()>=5)&&(snake.getSize()>=5)&&(get_strawberry_Counter()>=5))
+        {
+            int num = getStageNum();
+
+            // 스테이지 0에서는 melon을 안 먹으므로 melon은 반영하면 안된다
+            if (num == 0)
+                initialize(++num);
+            else
+                if (get_melon_Counter() >= 5)
+                    initialize(++num);
         }
     }
 
@@ -304,18 +305,18 @@ namespace snake{
 
         // 만약 다음으로 나아갈 위치가 ' '이라면
         // 이하 "뱀이 앞으로 나아가는 로직" 이라고 칭함
-        if (board.getCharAt(nextRow, nextCol) == ' ' || (board.getCharAt(nextRow, nextCol) == 'M') ||((melon!=NULL) && (power==1) && (board.getCharAt(nextRow, nextCol) == '3')))
+        if (board.getCharAt(nextRow, nextCol) == ' ' || (board.getCharAt(nextRow, nextCol) == 'M') ||((melon!=NULL) && (power!=0) && (board.getCharAt(nextRow, nextCol) == '3')))
         {   
-            if((melon!=NULL) && (power==1) && (board.getCharAt(nextRow, nextCol) == '3'))
+            if((melon!=NULL) && (power!=0) && (board.getCharAt(nextRow, nextCol) == '3'))
             {
                 DWall_y=nextRow, DWall_x=nextCol;
                 tick_count2=0;
                 createDWall();
-                power=0;
+                power--;
 
-                //delete melon
-                delete melon;
-                melon=NULL;
+                // '3'을 부술 때마다 melon 먹은거 하나 없어짐
+                melon_counter--;
+                missionboard.drawMelon_mission(get_melon_Counter());
             }
             if(board.getCharAt(nextRow, nextCol) == 'M')
             {   
@@ -323,8 +324,14 @@ namespace snake{
                 calculate_score(4);
                 missionboard.drawMelon_mission(get_melon_Counter()); 
                 power++;
+
+                // 먹자마자 melon NULL로 한다
                 board.add(nextRow, nextCol, ' ');
+                //delete melon
+                delete melon;
+                melon=NULL;
             }
+
             // snake의 꼬리 위치에다가 ' ' add 한다
             board.add(snake.tail().getY(), snake.tail().getX(), ' ');
             // snake의 꼬리를 없앤다
@@ -508,15 +515,41 @@ namespace snake{
             createStrawberry();
         }
 
-        if((melon!=NULL) && (power==0)&& (board.getStageNum()!=0))
+        if((melon!=NULL) && (board.getStageNum()!=0))
         {
             board.add(melon->getY(), melon->getX(), ' ');
             delete melon;
             melon =NULL;
             createMelon();
         }
+
+        // 스테이지 0에서는 deleteItem()을 실행할 필요가 없다. 아이템 자체가 3개니까
+        if (board.getStageNum() != 0)
+            deleteItem();
     }
     // ==============================================
+
+    // 4개 아이템 중 하나 랜덤으로 골라서 게임 창에 미반영 한다
+    void SnakeGame::deleteItem()
+    {
+        int deleteItemNum = rand() %4;
+
+        switch (deleteItemNum)
+        {
+        case 0:
+            board.add(apple->getY(), apple->getX(), ' ');
+            break;
+        case 1:
+            board.add(bomb->getY(), bomb->getX(), ' ');
+            break;
+        case 2:
+            board.add(strawberry->getY(), strawberry->getX(), ' ');
+            break;
+        case 3:
+            board.add(melon->getY(), melon->getX(), ' ');
+            break;
+        }
+    }
 
     void SnakeGame::endWarp()
     {
