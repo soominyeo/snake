@@ -104,7 +104,8 @@ int main()
         leaderBoard.addRank(Rank(name, game.score));
         leaderBoard.save();
         leaderBoard.show();
-        mvprintw(getmaxy(stdscr)-1, 0, "Game Over!!! Do You Want Quit? [q] / Restart: [Press Any Key]");
+        mvprintw(getmaxy(stdscr)-2, 0, "Game Over!!! (score: %d)", game.score); 
+        mvprintw(getmaxy(stdscr)-1, 0, "Do You Want Quit? [q] / Restart: [Press Any Key]");
 
 
         // 만약 q를 눌렀으면 while문 빠져 나간다
