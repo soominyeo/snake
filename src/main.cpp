@@ -15,7 +15,7 @@ int main()
     std::cout << "please enter your name:";
     std::cin >> name;
 
-    name.erase(std::remove(name.begin(), name.end(), ','), name.end());
+    name.erase(std::remove(name.begin(), name.end(), LeaderBoard::delimiter), name.end());
 
     // ncurses 시작
     initscr();
