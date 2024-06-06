@@ -97,6 +97,6 @@ namespace snake {
     Rank::Rank(std::string n, int s) : name(n), score(s) {};
 
     bool Rank::operator<(const Rank& rhs) const {
-        return score > rhs.score;
+        return (score != rhs.score) ? (score > rhs.score) : (name > rhs.name);
     }
 }

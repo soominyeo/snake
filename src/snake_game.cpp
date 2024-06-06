@@ -161,24 +161,29 @@ namespace snake{
             // setDirection(direction)은 현재 방향과 반대 방향 키를 누르면 false 반환, 아니면 true 반환한다
             // 반대 방향 키를 누르면 게임 오버가 되도록 설정
             case 'w':
+            case 'W':
                 if (!snake.setDirection(up))
                     game_over = true;
                 break;
             case 's':
+            case 'S':
                 if (!snake.setDirection(down))
                     game_over = true;
                 break;
             case 'd':
+            case 'D':
                 if (!snake.setDirection(right))
                     game_over = true;
                 break;
             case 'a':
+            case 'A':
                 if (!snake.setDirection(left))
                     game_over = true;
                 break;
 
             // p 누르면 pause
             case 'p':
+            case 'P':
                 // 게임 창 속도를 음수로 함으로써 멈추게 한다
                 board.setTimeout(-1);
                 // p가 다시 입력될 때까지 while문 못 빠져 나감
@@ -191,6 +196,7 @@ namespace snake{
             
             // 임시로 만든 기능. n 누르면 다음 스테이지로 넘어감
             case 'n':
+            case 'N':
                 // 현재 게임의 stage 번호를 num에 저장
                 int num = getStageNum();
 
