@@ -25,9 +25,6 @@ namespace snake {
 
         void init();
         void show();
-        void drawBorder();
-        void drawHeader();
-        void drawScore(int idx, std::string name, int score);
         void close();
         void addRank(Rank rank);
         void clearRank();
@@ -38,5 +35,9 @@ namespace snake {
         std::set<snake::Rank> ranking;
 
         WINDOW *win;
+
+        void drawBorder();
+        void drawHeader();
+        void drawScore(int idx, std::string name, int score);
     };
 };
