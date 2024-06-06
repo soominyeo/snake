@@ -1,5 +1,4 @@
-#ifndef MISSIONBOARD_HPP
-#define MISSIONBOARD_HPP
+#pragma once
 
 #include <ncurses.h>
 #include <cstdio> 
@@ -32,5 +31,3 @@ class MissionBoard {
 
         WINDOW *win;
 };}
-
-#endif /* MISSIONBOARD_HPP */

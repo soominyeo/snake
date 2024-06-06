@@ -1,6 +1,5 @@
-#include "snake_game.hpp"
 #include <chrono>
-#include <thread>
+#include "snake_game.hpp"
 
 namespace snake{
     // 생성자 호출 시 게임 창을 stage 0번으로 초기화
