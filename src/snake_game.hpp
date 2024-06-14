@@ -1,12 +1,11 @@
 #pragma once
 #include <ncurses.h>
+#include <stdlib.h>
+#include <time.h>
 #include "snake.hpp"
 #include "board.hpp"
 #include "item.hpp"
-//#include "new_warp.hpp"
 #include "missionboard.hpp"
-#include <stdlib.h>
-#include <time.h>
 
 namespace snake{
 class SnakeGame

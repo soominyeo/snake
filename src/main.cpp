@@ -1,11 +1,10 @@
 #include <ncurses.h>
-#include "snake_game.hpp"
-#include "leaderboard.hpp"
 #include <chrono>
-#include <thread>
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include "snake_game.hpp"
+#include "leaderboard.hpp"
 
 using namespace snake;
 int main()
