@@ -3,7 +3,7 @@
 
 namespace snake{
     // 생성자 호출 시 게임 창을 stage 0번으로 초기화
-    SnakeGame::SnakeGame(int stageNum)
+    SnakeGame::SnakeGame(int stageNum): apple(NULL), bomb(NULL), melon(NULL), strawberry(NULL), warp1(NULL), warp2(NULL)
     {
         initialize(stageNum);
     }
@@ -11,12 +11,12 @@ namespace snake{
     // 소멸자 호출 시 동적으로 할당했던 변수 delete
     SnakeGame::~SnakeGame()
     {
-        delete apple;
-        delete bomb;
-        delete warp1;
-        delete warp2;
-        delete melon;
-        delete strawberry;
+        if (apple != NULL) delete apple;
+        if (bomb != NULL) delete bomb;
+        if (warp1 != NULL) delete warp1;
+        if (warp2 != NULL) delete warp2;
+        if (melon != NULL) delete melon;
+        if (strawberry != NULL) delete strawberry;
     }
 
     // 게임 시작할 시(= 생성자 호출 될 시) 진행하는 로직
